@@ -30,6 +30,6 @@ public class CoordinateLabeler : MonoBehaviour
         coordinates.x = Mathf.RoundToInt(transform.parent.position.x) / Mathf.RoundToInt(UnityEditor.EditorSnapSettings.move.x);
         coordinates.y = Mathf.RoundToInt(transform.parent.position.z) / Mathf.RoundToInt(UnityEditor.EditorSnapSettings.move.z);
         label.text = coordinates.x + "," + coordinates.y;
-        transform.parent.parent.name = label.text;
+        transform.parent.name = label.text;
     }
 }
