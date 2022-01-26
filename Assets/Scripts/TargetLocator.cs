@@ -6,6 +6,7 @@ using UnityEngine;
 public class TargetLocator : MonoBehaviour
 {
     [SerializeField] Transform weapon;
+    [SerializeField] ParticleSystem bulletsParticleSystem;
     Transform target;
     // Start is called before the first frame update
     void Start()
@@ -24,6 +25,16 @@ public class TargetLocator : MonoBehaviour
         if (target)
         {
             weapon.LookAt(target);
+            if (bulletsParticleSystem && bulletsParticleSystem.isStopped)
+            {
+                bulletsParticleSystem.Play();
+            }
+        } else
+        {
+            if (bulletsParticleSystem && bulletsParticleSystem.isPlaying)
+            {
+                bulletsParticleSystem.Play();
+            }
         }
     }
 }

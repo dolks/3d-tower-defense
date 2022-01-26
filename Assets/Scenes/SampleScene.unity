@@ -1394,10 +1394,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 292665743712305282, guid: b940df629b09f434dbb9fd487257db6c, type: 3}
-      propertyPath: path.Array.size
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 292665743712305282, guid: b940df629b09f434dbb9fd487257db6c, type: 3}
       propertyPath: path.Array.data[0]
       value: 
       objectReference: {fileID: 710158165}
@@ -1425,6 +1421,10 @@ PrefabInstance:
       propertyPath: path.Array.data[6]
       value: 
       objectReference: {fileID: 1888748289}
+    - target: {fileID: 4265868676824338563, guid: b940df629b09f434dbb9fd487257db6c, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5040643765344069697, guid: b940df629b09f434dbb9fd487257db6c, type: 3}
       propertyPath: m_Name
       value: Ram
