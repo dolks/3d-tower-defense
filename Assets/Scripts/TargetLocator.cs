@@ -7,6 +7,7 @@ public class TargetLocator : MonoBehaviour
 {
     [SerializeField] Transform weapon;
     [SerializeField] ParticleSystem bulletsParticleSystem;
+    [SerializeField] float range = 15;
     Transform target;
     // Start is called before the first frame update
     void Start()
@@ -18,23 +19,45 @@ public class TargetLocator : MonoBehaviour
     void Update()
     {
         AimWeapon();
+        LocateClosestTarget();
+    }
+
+    private void LocateClosestTarget()
+    {
+        EnemyMover[] enemies = FindObjectsOfType<EnemyMover>();
+        Transform closestTarget = null;
+        float maxDistance = Mathf.Infinity;
+
+        foreach(EnemyMover enemy in enemies)
+        {
+            float targetDistance = Vector3.Distance(enemy.transform.position, transform.position);
+
+            if (targetDistance < maxDistance)
+            {
+                maxDistance = targetDistance;
+                closestTarget = enemy.transform;
+            }
+        }
+
+        target = closestTarget;
     }
 
     private void AimWeapon()
     {
+
         if (target)
         {
-            weapon.LookAt(target);
-            if (bulletsParticleSystem && bulletsParticleSystem.isStopped)
+            float targetDistance = Vector3.Distance(target.position, transform.position);
+            if (targetDistance <= range)
             {
-                bulletsParticleSystem.Play();
+                weapon.LookAt(target);
+                var emission = bulletsParticleSystem.emission;
+                emission.enabled = true;
             }
         } else
         {
-            if (bulletsParticleSystem && bulletsParticleSystem.isPlaying)
-            {
-                bulletsParticleSystem.Play();
-            }
+            var emission = bulletsParticleSystem.emission;
+            emission.enabled = false;
         }
     }
 }
