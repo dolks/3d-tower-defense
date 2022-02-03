@@ -5,6 +5,12 @@ using UnityEngine;
 public class EnemyHealth : MonoBehaviour
 {
     [SerializeField] int health = 10;
+    Enemy enemy;
+
+    private void Start()
+    {
+        enemy = GetComponent<Enemy>();
+    }
 
     private void OnParticleCollision(GameObject other)
     {
@@ -18,5 +24,6 @@ public class EnemyHealth : MonoBehaviour
     void Die()
     {
         gameObject.SetActive(false);
+        enemy.RewardGold();
     }
 }

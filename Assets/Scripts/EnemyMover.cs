@@ -6,12 +6,18 @@ using UnityEngine;
 public class EnemyMover : MonoBehaviour
 {
     [SerializeField] List<Waypoint> path = new List<Waypoint>();
+    Enemy enemy;
     // Start is called before the first frame update
     void OnEnable()
     {
         FindPath();
         ReturnToStart();
         StartCoroutine(MoveAlongPath());
+    }
+
+    private void Start()
+    {
+        enemy = GetComponent<Enemy>();
     }
 
     void FindPath()
@@ -49,6 +55,7 @@ public class EnemyMover : MonoBehaviour
                 yield return new WaitForEndOfFrame();
             }
         }
+        enemy.StealGold();
         gameObject.SetActive(false);
     }
 
