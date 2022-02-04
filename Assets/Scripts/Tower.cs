@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
-    [SerializeField] int cost = 75;
+    [SerializeField] int cost = 50;
     Bank bank;
     // Start is called before the first frame update
     void Start()

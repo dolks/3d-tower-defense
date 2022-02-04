@@ -2,10 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+[RequireComponent(typeof(Enemy))]
 public class EnemyHealth : MonoBehaviour
 {
-    [SerializeField] int health = 10;
+
+    [SerializeField] int health = 5;
+    [SerializeField] int difficultyRamp = 1;
     Enemy enemy;
+    int startingHealth = 5;
 
     private void Start()
     {
@@ -25,5 +30,7 @@ public class EnemyHealth : MonoBehaviour
     {
         gameObject.SetActive(false);
         enemy.RewardGold();
+        health = startingHealth + difficultyRamp;
+        difficultyRamp++;
     }
 }
