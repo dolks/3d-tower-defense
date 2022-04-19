@@ -9,13 +9,15 @@ using System;
 public class CoordinateLabeler : MonoBehaviour
 {
     TextMeshPro label;
-    Waypoint waypoint;
+    //Waypoint waypoint;
     Vector2Int coordinates = new Vector2Int();
+    GridManager gridManager;
 
     private void Awake()
     {
+        gridManager = FindObjectOfType<GridManager>();
         label = GetComponent<TextMeshPro>();
-        waypoint = GetComponentInParent<Waypoint>();
+        //waypoint = GetComponentInParent<Waypoint>();
         UpdateLabel();
     }
 
@@ -40,13 +42,24 @@ public class CoordinateLabeler : MonoBehaviour
 
     void UpdateColors()
     {
-        if (waypoint.IsPlaceable)
+        if (!gridManager) { return; }
+        Node node = gridManager.GetNode(coordinates);
+        if (node == null) { return; }
+        if (!node.isSearchable)
         {
-            label.color = Color.white;
+            label.color = Color.gray;
+        }
+        else if (node.isPath)
+        {
+            label.color = new Color(1, 0.5f, 0);
+        }
+        else if (node.isExplored)
+        {
+            label.color = Color.yellow;
         }
         else
         {
-            label.color = Color.gray;
+            label.color = Color.white;
         }
     }
 
