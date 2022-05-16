@@ -8330,11 +8330,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac3c9426c154242f9a1be3b032025d62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentSearchNode:
-    coordinates: {x: 0, y: 0}
-    isSearchable: 0
-    isExplored: 0
-    isPath: 0
+  startCoordinates: {x: 0, y: 0}
+  destinationCoordinates: {x: 3, y: 2}
 --- !u!1001 &1166671285
 PrefabInstance:
   m_ObjectHideFlags: 0
