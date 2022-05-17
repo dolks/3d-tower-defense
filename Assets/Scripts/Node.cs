@@ -9,7 +9,7 @@ public class Node
     public bool isSearchable;
     public bool isExplored;
     public bool isPath;
-    public Node parent;
+    public Node connectedTo;
 
     public Node(Vector2Int coordinates, bool isSearchable)
     {
