@@ -13,7 +13,7 @@ public class EnemyMover : MonoBehaviour
     {
         FindPath();
         ReturnToStart();
-        StartCoroutine(MoveAlongPath());
+        if (path.Count > 0) { StartCoroutine(MoveAlongPath()); }
     }
 
     private void Start()
@@ -26,6 +26,7 @@ public class EnemyMover : MonoBehaviour
         path.Clear();
 
         GameObject pathObject = GameObject.FindGameObjectWithTag("Path");
+        if (pathObject == null) { return; }
         foreach (Transform child in pathObject.transform)
         {
             path.Add(child.GetComponent<Tile>());
@@ -34,12 +35,13 @@ public class EnemyMover : MonoBehaviour
 
     void ReturnToStart()
     {
+        if (path.Count == 0) { return; }
         transform.position = path[0].transform.position;
     }
 
     IEnumerator MoveAlongPath()
     {
-        foreach(Tile Tile in path)
+        foreach (Tile Tile in path)
         {
             Vector3 startPos = transform.position,
                 endPos = Tile.transform.position;

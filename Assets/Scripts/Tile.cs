@@ -10,10 +10,12 @@ public class Tile : MonoBehaviour
 
     GridManager gridManager;
     Vector2Int coordinates = new Vector2Int();
+    Pathfinder pathfinder;
 
     private void Awake()
     {
         gridManager = FindObjectOfType<GridManager>();
+        pathfinder = FindObjectOfType<Pathfinder>();
     }
 
     private void Start()
@@ -31,10 +33,12 @@ public class Tile : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (isPlaceable)
+        Node node = gridManager.GetNode(coordinates);
+        if (node != null && node.isSearchable && !pathfinder.WillBlockPath(coordinates))
         {
             bool placed = tower.Place(tower, transform.position);
             isPlaceable = !placed;
+            gridManager.BlockNode(coordinates);
         }
     }
 }

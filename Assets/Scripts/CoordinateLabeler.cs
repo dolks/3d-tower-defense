@@ -9,7 +9,6 @@ using System;
 public class CoordinateLabeler : MonoBehaviour
 {
     TextMeshPro label;
-    //Waypoint waypoint;
     Vector2Int coordinates = new Vector2Int();
     GridManager gridManager;
 
@@ -17,7 +16,6 @@ public class CoordinateLabeler : MonoBehaviour
     {
         gridManager = FindObjectOfType<GridManager>();
         label = GetComponent<TextMeshPro>();
-        //waypoint = GetComponentInParent<Waypoint>();
         UpdateLabel();
     }
 
