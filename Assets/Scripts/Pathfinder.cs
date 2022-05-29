@@ -5,6 +5,8 @@ using UnityEngine;
 public class Pathfinder : MonoBehaviour
 {
     [SerializeField] Vector2Int startCoordinates, destinationCoordinates;
+    public Vector2Int StartCoordinates { get { return startCoordinates; } }
+    public Vector2Int DestinationCoordinates { get { return destinationCoordinates; } }
 
     Node startNode, destinationNode;
     Node currentSearchNode;
@@ -20,29 +22,33 @@ public class Pathfinder : MonoBehaviour
         if (gridManager)
         {
             grid = gridManager.Grid;
+            startNode = grid[startCoordinates];
+            destinationNode = grid[destinationCoordinates];
         }
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        startNode = gridManager.Grid[startCoordinates];
-        destinationNode = gridManager.Grid[destinationCoordinates];
-
         GetNewPath();
     }
 
     public List<Node> GetNewPath()
     {
+        return GetNewPath(startCoordinates);
+    }
+
+    public List<Node> GetNewPath(Vector2Int coordinates)
+    {
         gridManager.ResetNodes();
-        BreadthFirstSearch();
+        BreadthFirstSearch(coordinates);
         return BuildPath();
     }
 
     void ExploreNeighbors()
     {
         List<Node> neighbors = new List<Node>();
-        foreach(Vector2Int direction in directions)
+        foreach (Vector2Int direction in directions)
         {
             if (grid.ContainsKey(currentSearchNode.coordinates + direction))
             {
@@ -61,14 +67,18 @@ public class Pathfinder : MonoBehaviour
         }
     }
 
-    void BreadthFirstSearch()
+    void BreadthFirstSearch(Vector2Int coordinates)
     {
+
+        startNode.isSearchable = true;
+        destinationNode.isSearchable = true;
+
         frontier.Clear();
         reached.Clear();
 
         bool isRunning = true;
-        frontier.Enqueue(startNode);
-        reached.Add(startCoordinates, startNode);
+        frontier.Enqueue(grid[coordinates]);
+        reached.Add(coordinates, grid[coordinates]);
 
         while (isRunning && frontier.Count > 0)
         {
@@ -111,7 +121,7 @@ public class Pathfinder : MonoBehaviour
             List<Node> newPath = GetNewPath();
             grid[coordinates].isSearchable = previousState;
 
-            if (newPath.Count<=1)
+            if (newPath.Count <= 1)
             {
                 GetNewPath();
                 return true;
@@ -120,5 +130,10 @@ public class Pathfinder : MonoBehaviour
 
         return false;
 
+    }
+
+    public void NotifyReceivers()
+    {
+        BroadcastMessage("RecalculatePath", false, SendMessageOptions.DontRequireReceiver);
     }
 }

@@ -6,45 +6,53 @@ using UnityEngine;
 [RequireComponent(typeof(Enemy))]
 public class EnemyMover : MonoBehaviour
 {
-    [SerializeField] List<Tile> path = new List<Tile>();
+    List<Node> path = new List<Node>();
     Enemy enemy;
+    GridManager gridManager;
+    Pathfinder pathfinder;
     // Start is called before the first frame update
     void OnEnable()
     {
-        FindPath();
         ReturnToStart();
-        if (path.Count > 0) { StartCoroutine(MoveAlongPath()); }
+        RecalculatePath(true);
     }
 
-    private void Start()
+    private void Awake()
     {
         enemy = GetComponent<Enemy>();
+        gridManager = FindObjectOfType<GridManager>();
+        pathfinder = FindObjectOfType<Pathfinder>();
     }
 
-    void FindPath()
+    void RecalculatePath(bool resetPath)
     {
-        path.Clear();
-
-        GameObject pathObject = GameObject.FindGameObjectWithTag("Path");
-        if (pathObject == null) { return; }
-        foreach (Transform child in pathObject.transform)
+        Vector2Int coordinates = new Vector2Int();
+        if (resetPath)
         {
-            path.Add(child.GetComponent<Tile>());
+            coordinates = pathfinder.StartCoordinates;
         }
+        else
+        {
+            coordinates = gridManager.GetCoordinatesFromPosition(transform.position);
+        }
+
+        StopAllCoroutines();
+        path.Clear();
+        path = pathfinder.GetNewPath(coordinates);
+        StartCoroutine(MoveAlongPath());
     }
 
     void ReturnToStart()
     {
-        if (path.Count == 0) { return; }
-        transform.position = path[0].transform.position;
+        transform.position = gridManager.GetPositionFromCoordinates(pathfinder.StartCoordinates);
     }
 
     IEnumerator MoveAlongPath()
     {
-        foreach (Tile Tile in path)
+        for (int i = 1; i < path.Count; i++)
         {
             Vector3 startPos = transform.position,
-                endPos = Tile.transform.position;
+                endPos = gridManager.GetPositionFromCoordinates(path[i].coordinates);
             float travelPercent = 0;
             transform.LookAt(endPos);
             while (travelPercent < 1)
